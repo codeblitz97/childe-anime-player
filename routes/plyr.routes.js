@@ -7,12 +7,14 @@ router.post('/iframe', (req, res) => {
   try {
     const requestJSON = req.body;
 
-    if (!requestJSON || !requestJSON.video.sources) {
+    if (!requestJSON || !requestJSON.video || !requestJSON.video.sources) {
       return res.status(400).send({
         message: 'JSON Configuration is required.',
         requestJSON,
       });
     }
+
+    console.log(requestJSON);
 
     plyrConfig = requestJSON;
 
