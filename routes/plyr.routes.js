@@ -1,5 +1,6 @@
-import express from 'express';
-import { sendSuccessResponse } from '../helper';
+const express = require('express');
+const { sendSuccessResponse } = require('../helper');
+const createHttpError = require('http-errors');
 const router = express.Router();
 
 let plyrConfig;
@@ -118,4 +119,4 @@ router.get('/iframe', (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

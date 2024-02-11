@@ -4,7 +4,7 @@
  * @param {string} message The message
  * @param {object | null} result
  */
-export const sendSuccessResponse = (res, message, result) => {
+exports.sendSuccessResponse = (res, message, result) => {
   return res.status(200).json({
     status: res.statusCode,
     message,
