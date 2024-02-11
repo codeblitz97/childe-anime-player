@@ -71,7 +71,20 @@ router.post('/iframe', (req, res) => {
         <script>
           document.addEventListener('DOMContentLoaded', () => {
             const selector = '#player';
-            const player = new Plyr(selector);
+            const player = new Plyr(selector, {
+              controls: [
+                'play',
+                'progress',
+                'current-time',
+                'duration',
+                'mute',
+                'volume',
+                'settings',
+                'pip',
+                'airplay',
+                'fullscreen',
+              ],
+            });
 
             if (Hls.isSupported()) {
               const hls = new Hls();
