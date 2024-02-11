@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "plyr": "^3.7.8"
+  },
+  "name": "childe-anime-player",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeblitz97/childe-anime-player.git"
+  },
+  "author": "Muhammad Huda, Mohtasim Alam Sohom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codeblitz97/childe-anime-player/issues"
+  },
+  "homepage": "https://github.com/codeblitz97/childe-anime-player#readme",
+  "description": ""
+}
