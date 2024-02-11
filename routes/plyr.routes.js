@@ -56,8 +56,8 @@ router.post('/iframe', (req, res) => {
           }
           
           video {
-              width: 700px;
-              height: 400px;
+              max-width: 100%;
+              height: auto;
           }
         </style>
       </head>
