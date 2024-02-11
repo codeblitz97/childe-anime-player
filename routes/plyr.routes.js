@@ -7,7 +7,7 @@ router.post('/iframe', (req, res) => {
   try {
     const requestJSON = req.body;
 
-    if (!requestJSON) {
+    if (!requestJSON || !requestJSON.video.sources) {
       return res.status(400).send({
         message: 'JSON Configuration is required.',
         requestJSON,
