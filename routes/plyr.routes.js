@@ -74,7 +74,7 @@ router.get('/iframe', (req, res) => {
     const encodedHtmlContent = encodeURIComponent(htmlContent);
 
     // Set the encoded HTML content as the srcdoc attribute
-    const iframeContent = `<iframe srcdoc="${encodedHtmlContent}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`;
+    const iframeContent = `<iframe srcdoc="${htmlContent}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`;
 
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(iframeContent);
