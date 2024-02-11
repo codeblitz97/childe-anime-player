@@ -9,8 +9,8 @@ router.post('/iframe', (req, res) => {
 
     if (!requestJSON) {
       return res.status(400).send({
-        message: "JSON Configuration is required.",
-      requestJSON
+        message: 'JSON Configuration is required.',
+        requestJSON,
       });
     }
 
@@ -101,6 +101,7 @@ router.post('/iframe', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(htmlContent);
   } catch (error) {
+    console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
