@@ -1,5 +1,5 @@
-import express from 'express';
-import { sendSuccessResponse } from '../helper.js';
+const express = require('express');
+const { sendSuccessResponse } = require('../helper');
 
 const router = express.Router();
 
@@ -119,4 +119,4 @@ router.get('/iframe', (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

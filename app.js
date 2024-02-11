@@ -1,8 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import { sendSuccessResponse } from './helper.js';
-import plyrRoutes from './routes/plyr.routes.js';
+const cors = require('cors');
+const morgan = require('morgan');
+const express = require('express');
+const { sendSuccessResponse } = require('./helper');
+const plyrRoutes = require('./routes/plyr.routes');
 
 const app = express();
 
@@ -24,4 +24,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-export default app;
+module.exports = app;
