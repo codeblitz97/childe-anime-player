@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const CryptoJS = require('crypto-js');
 
 let plyrConfig;
 
@@ -13,8 +14,6 @@ router.post('/iframe', (req, res) => {
         requestJSON,
       });
     }
-
-    console.log(requestJSON);
 
     plyrConfig = requestJSON;
 
@@ -68,31 +67,31 @@ router.post('/iframe', (req, res) => {
           ${tracksHTML}
         </video>
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
             const selector = '#player';
-            const player = new Plyr(selector, { 
-              controls: ["play", "progress", "current-time", "duration", "mute", "volume", "settings", "pip", "airplay", "fullscreen"],         
-              i18n: {
-                play: "Play (K)",
-                pause: "Pause (K)",
-                mute: "Mute (M)",
-                unmute: "Unmute (M)",
-                enterFullscreen: "Enter fullscreen (F)",
-                exitFullscreen: "Exit fullscreen (F)",
-                qualityLabel: {
-                    0: "Auto"
-                }
-              },
-              seekTime: 5,
-              keyboard: {
-                  focused: !0,
-                  global: !0
-              },
-              fullscreen: {
-                  iosNative: !0
-              }
+            const player = new Plyr(selector, {
+              controls: [
+                'play',
+                'progress',
+                'current-time',
+                'duration',
+                'mute',
+                'volume',
+                'settings',
+                'pip',
+                'airplay',
+                'fullscreen',
+              ],
             });
+
+            if (Hls.isSupported()) {
+              const hls = new Hls();
+              hls.loadSource('${plyrConfig.video.sources[0].src}');
+              hls.attachMedia(player.media);
+            }
+    
             window.player = player;
           });
         </script>
@@ -100,7 +99,6 @@ router.post('/iframe', (req, res) => {
       </html>
     `;
 
-    res.setHeader('Content-Type', 'text/html');
     res.status(200).send(htmlContent);
   } catch (error) {
     console.error(error);
