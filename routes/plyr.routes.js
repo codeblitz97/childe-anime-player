@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendSuccessResponse } = require('../helper');
+const { sendSuccessResponse } = require('../helper.js');
 
 const router = express.Router();
 

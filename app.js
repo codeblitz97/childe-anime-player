@@ -1,8 +1,8 @@
 const cors = require('cors');
 const morgan = require('morgan');
 const express = require('express');
-const { sendSuccessResponse } = require('./helper');
-const plyrRoutes = require('./routes/plyr.routes');
+const { sendSuccessResponse } = require('./helper.js');
+const plyrRoutes = require('./routes/plyr.routes.js');
 
 const app = express();
 
