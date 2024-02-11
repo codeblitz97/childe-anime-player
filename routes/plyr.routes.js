@@ -56,13 +56,13 @@ router.post('/iframe', (req, res) => {
           }
           
           video {
-              max-width: 300px;
-              height: 200px;
+              max-width: 1080px;
+              height: 720px;
           }
         </style>
       </head>
       <body>
-        <video controls crossorigin playsinline id="player" style="max-width:300px; height:200px;">
+        <video controls crossorigin playsinline id="player" style="max-width:1080px; height:720px;">
           ${sourcesHTML}
           ${tracksHTML}
         </video>
