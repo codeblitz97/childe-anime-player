@@ -91,8 +91,12 @@ router.get('/iframe', (req, res) => {
           </html>
         `;
 
+    const iframeContent = `
+      <iframe srcdoc="${htmlContent}" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+    `;
+
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).send(htmlContent);
+    res.status(200).send(iframeContent);
   } catch (error) {
     res.status(500).send('Internal Server Error');
   }
