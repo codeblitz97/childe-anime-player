@@ -54,15 +54,15 @@ router.post('/iframe', (req, res) => {
           body {
               font-family: 'Inter', sans-serif;
           }
-
-          button.plyr__control--overlaid {
-              display:none;
-              visibility: hidden;
+          
+          video {
+              max-width: 100%;
+              height: auto;
           }
         </style>
       </head>
       <body>
-        <video controls crossorigin playsinline id="player">
+        <video controls crossorigin playsinline id="player" style="max-width:100%; height:auto;">
           ${sourcesHTML}
           ${tracksHTML}
         </video>
