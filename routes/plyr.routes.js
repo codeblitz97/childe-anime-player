@@ -1,6 +1,5 @@
-const express = require('express');
-const { sendSuccessResponse } = require('../helper');
-
+import express from 'express';
+import { sendSuccessResponse } from '../helper';
 const router = express.Router();
 
 let plyrConfig;
@@ -119,4 +118,4 @@ router.get('/iframe', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
