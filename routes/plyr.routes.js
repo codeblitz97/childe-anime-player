@@ -1,39 +1,18 @@
 const express = require('express');
-const { sendSuccessResponse } = require('../helper');
-const createHttpError = require('http-errors');
 const router = express.Router();
 
 let plyrConfig;
 
-router.post('/set-sources', (req, res, next) => {
+router.get('/iframe', (req, res) => {
   try {
     const requestJSON = req.body;
 
-    // Store the Plyr configuration
-    plyrConfig = requestJSON;
-
-    sendSuccessResponse(
-      res,
-      'Plyr configuration set successfully',
-      requestJSON
-    );
-  } catch (error) {
-    next(
-      createHttpError(500, {
-        message: 'Internal Server Error',
-        hint: `${error.message}`,
-      })
-    );
-  }
-});
-
-router.get('/iframe', (req, res) => {
-  try {
-    if (!plyrConfig) {
-      return res.status(400).send('Plyr configuration not set.');
+    if (!requestJSON || !requestJSON.video || !requestJSON.video.sources) {
+      return res.status(400).send('Invalid Plyr configuration.');
     }
 
-    // Dynamically generate source and track tags based on the Plyr configuration
+    plyrConfig = requestJSON;
+
     const sourcesHTML = plyrConfig.video.sources
       .map(
         (source) => `
