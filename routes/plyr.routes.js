@@ -3,7 +3,7 @@ const router = express.Router();
 
 let plyrConfig;
 
-router.get('/iframe', (req, res) => {
+router.post('/iframe', (req, res) => {
   try {
     const requestJSON = req.body;
 
