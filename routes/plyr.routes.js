@@ -17,7 +17,7 @@ router.post('/iframe', (req, res) => {
     const sourcesHTML = plyrConfig.video.sources
       .map(
         (source) => `
-          <source src="${source.src}" type="${source.type}" size="${source.size}" />
+          <source data-quality="${source.size}" src="${source.src}" type="${source.type}" size="${source.size}" />
         `
       )
       .join('');
@@ -31,10 +31,6 @@ router.post('/iframe', (req, res) => {
         `
       )
       .join('');
-
-    const hlsSources = plyrConfig.video.sources
-      .map((source) => source.src)
-      .join(',');
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -86,12 +82,25 @@ router.post('/iframe', (req, res) => {
               ],
             });
 
+            player.on('qualitychange', event => {
+              const selectedQuality = event.detail.quality;
+              const video = document.querySelector('#player');
+              const source = video.querySelector(\`source[data-quality="\${selectedQuality}"]\`);
+
+              if (source) {
+                video.src = source.src;
+                if (Hls.isSupported()) {
+                  const hls = new Hls();
+                  hls.loadSource(source.src);
+                  hls.attachMedia(video);
+                }
+              }
+            });
+
             if (Hls.isSupported()) {
               const hls = new Hls();
-              hls.loadSource([${hlsSources}]);
+              hls.loadSource('${plyrConfig.video.sources[0].src}');
               hls.attachMedia(player.media);
-            } else {
-              console.error('HLS is not supported on this browser');
             }
 
             window.player = player;
