@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const CryptoJS = require('crypto-js');
-
-let plyrConfig;
 
 router.post('/iframe', (req, res) => {
   try {
@@ -15,7 +12,7 @@ router.post('/iframe', (req, res) => {
       });
     }
 
-    plyrConfig = requestJSON;
+    const plyrConfig = requestJSON;
 
     const sourcesHTML = plyrConfig.video.sources
       .map(
@@ -70,8 +67,7 @@ router.post('/iframe', (req, res) => {
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
-            const selector = '#player';
-            const player = new Plyr(selector, {
+            const player = new Plyr('#player', {
               controls: [
                 'play',
                 'progress',
@@ -84,14 +80,24 @@ router.post('/iframe', (req, res) => {
                 'airplay',
                 'fullscreen',
               ],
+              settings: ['quality'],
             });
+
+            player.source = {
+              type: 'video',
+              sources: ${JSON.stringify(plyrConfig.video.sources)},
+              tracks: ${JSON.stringify(plyrConfig.video.tracks)},
+            };
 
             if (Hls.isSupported()) {
               const hls = new Hls();
-              hls.loadSource('${plyrConfig.video.sources[0].src}');
+              const sources = ${JSON.stringify(
+                plyrConfig.video.sources.map((source) => source.src)
+              )};
+              hls.loadSource(sources);
               hls.attachMedia(player.media);
             }
-    
+
             window.player = player;
           });
         </script>
