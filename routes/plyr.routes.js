@@ -24,16 +24,21 @@ router.post('/iframe', (req, res) => {
         `
       )
       .join('');
+    let tracksHTML;
 
-    const tracksHTML = plyrConfig.video.tracks
-      .map(
-        (track) => `
+    if (plyrConfig.video.tracks) {
+      tracksHTML = plyrConfig.video.tracks
+        .map(
+          (track) => `
           <track kind="${track.kind}" label="${track.label}" srclang="${
-          track.srclang
-        }" src="${track.src}"${track.default ? ' default' : ''} />
+            track.srclang
+          }" src="${track.src}"${track.default ? ' default' : ''} />
         `
-      )
-      .join('');
+        )
+        .join('');
+    } else {
+      tracksHTML = `<div></div>`;
+    }
 
     const htmlContent = `
       <!DOCTYPE html>
