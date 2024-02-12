@@ -32,6 +32,10 @@ router.post('/iframe', (req, res) => {
       )
       .join('');
 
+    const hlsSources = plyrConfig.video.sources
+      .map((source) => source.src)
+      .join(',');
+
     const htmlContent = `
       <!DOCTYPE html>
       <html lang="en">
@@ -82,19 +86,12 @@ router.post('/iframe', (req, res) => {
               ],
             });
 
-            player.source = {
-              type: 'video',
-              sources: ${JSON.stringify(plyrConfig.video.sources)},
-              tracks: ${JSON.stringify(plyrConfig.video.tracks)},
-            };
-
             if (Hls.isSupported()) {
               const hls = new Hls();
-              const sources = ${JSON.stringify(
-                plyrConfig.video.sources.map((source) => source.src)
-              )};
-              hls.loadSource(sources);
+              hls.loadSource([${hlsSources}]);
               hls.attachMedia(player.media);
+            } else {
+              console.error('HLS is not supported on this browser');
             }
 
             window.player = player;
