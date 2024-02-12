@@ -92,12 +92,19 @@ router.post('/iframe', (req, res) => {
                   'airplay',
                   'fullscreen',          
                 ];
+
+                const savedProgress = JSON.parse(localStorage.getItem('videoProgress')) || {};
+                const savedQuality = savedProgress.quality || availableQualities[0];
+                const savedTime = savedProgress.time || 0;        
+
                 defaultOptions.quality = {
-                  default: availableQualities[0],
+                  default: savedQuality,
                   options: availableQualities,
                   forced: true,
                   onChange: (e) => updateQuality(e)
                 }
+                video.currentTime = savedTime;
+                updateQuality(savedQuality);
                 new Plyr(video, defaultOptions)
               })
               hls.attachMedia(video);
@@ -110,6 +117,22 @@ router.post('/iframe', (req, res) => {
                 }
               })
             }
+            video.addEventListener('timeupdate', () => {
+              const videoProgress = {
+                time: video.currentTime,
+                quality: window.hls.levels[window.hls.currentLevel].height,
+              };
+              localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+            });
+        
+            video.addEventListener('qualitychange', () => {
+              const videoProgress = {
+                time: video.currentTime,
+                quality: window.hls.levels[window.hls.currentLevel].height,
+              };
+              localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+            });
+          });        
           });
         </script>
       </body>
