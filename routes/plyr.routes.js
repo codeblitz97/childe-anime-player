@@ -60,50 +60,56 @@ router.post('/iframe', (req, res) => {
       </head>
       <body>
         <video controls crossorigin playsinline id="player" style="max-width:100%; height:auto;">
-          ${sourcesHTML}
           ${tracksHTML}
         </video>
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
-            const player = new Plyr('#player', {
-              controls: [
-                'play',
-                'progress',
-                'current-time',
-                'duration',
-                'mute',
-                'volume',
-                'settings',
-                'pip',
-                'airplay',
-                'fullscreen',
-              ],
-            });
+            var video = document.getElementById('player');
+            var source = '${plyrConfig.video.sources[0].src}',
+            const defaultOptions = {};
 
-            player.on('qualitychange', event => {
-              const selectedQuality = event.detail.quality;
-              const video = document.querySelector('#player');
-              const source = video.querySelector(\`source[data-quality="\${selectedQuality}"]\`);
-
-              if (source) {
-                video.src = source.src;
-                if (Hls.isSupported()) {
-                  const hls = new Hls();
-                  hls.loadSource(source.src);
-                  hls.attachMedia(video);
-                }
-              }
-            });
-
-            if (Hls.isSupported()) {
+            if(Hls.isSupported()) {
               const hls = new Hls();
-              hls.loadSource('${plyrConfig.video.sources[0].src}');
-              hls.attachMedia(player.media);
-            }
+              hls.loadSource(source);
 
-            window.player = player;
+              hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+                const availableQualities = hls.levels.map((l) => l.height);
+                defaultOptions.controls = [
+                  'restart',
+                  'rewind', 
+                  'play',
+                  'fast-forward', 
+                  'progress',
+                  'current-time',
+                  'duration', 
+                  'mute',
+                  'volume',
+                  'captions',
+                  'settings',
+                  'pip',
+                  'airplay',
+                  'fullscreen',          
+                ];
+                defaultOptions.quality = {
+                  default: availableQualities[0],
+                  options: availableQualities,
+                  forced: true,
+                  onChange: (e) => updateQuality(e)
+                }
+                new Plyr(video, defaultOptions)
+              })
+              hls.attachMedia(video);
+              window.hls = hls;
+            }
+            function updateQuality(newQuality) {
+              window.hls.levels.forEach((level, levelIndex) => {
+                if(level.height === newQuality) {
+                  window.hls.currentLevel = levelIndex
+                }
+              })
+            }
           });
         </script>
       </body>
