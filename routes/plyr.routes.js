@@ -133,7 +133,6 @@ router.post('/iframe', (req, res) => {
               localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
             });
           });        
-          });
         </script>
       </body>
       </html>
