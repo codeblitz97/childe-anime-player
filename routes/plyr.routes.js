@@ -15,7 +15,7 @@ router.post('/iframe', (req, res) => {
     const plyrConfig = requestJSON;
 
     const clientId = requestJSON.id;
-    const localStorageKey = `videoProgress_${id}`;
+    const localStorageKey = `videoProgress_${clientId}`;
 
     const sourcesHTML = plyrConfig.video.sources
       .map(
