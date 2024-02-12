@@ -67,7 +67,7 @@ router.post('/iframe', (req, res) => {
         <script>
           document.addEventListener('DOMContentLoaded', () => {
             var video = document.getElementById('player');
-            var source = '${plyrConfig.video.sources[0].src}',
+            var source = '${plyrConfig.video.sources[0].src}';
             const defaultOptions = {};
 
             if(Hls.isSupported()) {
