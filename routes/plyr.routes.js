@@ -14,6 +14,9 @@ router.post('/iframe', (req, res) => {
 
     const plyrConfig = requestJSON;
 
+    const clientId = requestJSON.id;
+    const localStorageKey = `videoProgress_${id}`;
+
     const sourcesHTML = plyrConfig.video.sources
       .map(
         (source) => `
@@ -52,10 +55,31 @@ router.post('/iframe', (req, res) => {
               font-family: 'Inter', sans-serif;
           }
           
-          video {
-              max-width: 100%;
-              height: auto;
-          }
+          .plyr__video-wrapper {
+            background: black !important;
+        }
+
+        #videocontainer {
+            height: 100vh;
+            width: 100vw;
+            display: none;
+        }
+
+        .plyr__control--overlaid {
+            border-radius: 3px;
+        }
+
+        .plyr {
+            height: 100% !important;
+        }
+
+        .plyr__menu__container {
+            border-radius: 2px;
+        }
+
+        .plyr__time+.plyr__time {
+            display: block;
+        }
         </style>
       </head>
       <body>
@@ -93,9 +117,9 @@ router.post('/iframe', (req, res) => {
                   'fullscreen',          
                 ];
 
-                const savedProgress = JSON.parse(localStorage.getItem('videoProgress')) || {};
+                const savedProgress = JSON.parse(localStorage.getItem('${localStorageKey}')) || {};
                 const savedQuality = savedProgress.quality || availableQualities[0];
-                const savedTime = savedProgress.time || 0;        
+                const savedTime = savedProgress.time || 0;
 
                 defaultOptions.quality = {
                   default: savedQuality,
@@ -122,17 +146,17 @@ router.post('/iframe', (req, res) => {
                 time: video.currentTime,
                 quality: window.hls.levels[window.hls.currentLevel].height,
               };
-              localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+              localStorage.setItem('${localStorageKey}', JSON.stringify(videoProgress));
             });
-        
+
             video.addEventListener('qualitychange', () => {
               const videoProgress = {
                 time: video.currentTime,
                 quality: window.hls.levels[window.hls.currentLevel].height,
               };
-              localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+              localStorage.setItem('${localStorageKey}', JSON.stringify(videoProgress));
             });
-          });        
+      });        
         </script>
       </body>
       </html>
