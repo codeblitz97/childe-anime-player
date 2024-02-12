@@ -80,7 +80,6 @@ router.post('/iframe', (req, res) => {
                 'airplay',
                 'fullscreen',
               ],
-              settings: ['quality'],
             });
 
             player.source = {
